@@ -9,6 +9,8 @@ The included example shows darkened and lightened variants of all 240 ANSI color
 
 */
 
+#![no_std]
+
 mod ansi;
 mod color;
 mod error;
