@@ -15,8 +15,8 @@
 Definition of ANSI, RGB and HSL color types and all the conversions between them.
 
 There are many other color conversion crates.
-This one is useful when you're interested into variations of an ANSI color for your TUI application, for example fading, lightening, darkening, with compatibility with terminals which don't support RGB.
+This one is useful when you're interested into variations of an ANSI color for your TUI application, for example fading, lightening, darkening, with compatibility with terminals that don't support RGB.
 
-The included example shows darken and lighten versions of all 240 ANSI colors:
+The included example shows darkened and lightened variants of all 240 ANSI colors, with all variants still ANSI colors.
 
 ![dark-to-light](doc/dark-to-light.png)
