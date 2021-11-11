@@ -33,7 +33,19 @@ impl Hsl {
     }
     pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
         debug_assert!(w1 + w2 > 0.0);
-        let h = (w1*c1.h + w2*c2.h) / (w1+w2);
+        let h = if (c1.h - c2.h).abs() > 180.0 {
+            // the shortest path involve crossing Tau
+            let (h1, h2) = if c1.h < c2.h {
+                (c1.h + 360.0, c2.h)
+            } else {
+                (c1.h, c2.h + 360.0)
+            };
+            ((w1*h1 + w2*h2) / (w1+w2)) % 360.0
+        } else {
+            // direct way
+            (w1*c1.h + w2*c2.h) / (w1+w2)
+        };
+        //let h = (w1*c1.h + w2*c2.h) / (w1+w2);
         let s = (w1*c1.s + w2*c2.s) / (w1+w2);
         let l = (w1*c1.l + w2*c2.l) / (w1+w2);
         Self { h, s, l }
