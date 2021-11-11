@@ -45,20 +45,21 @@ fn main() {
         print!(" │ ");
         let hsl1 = c1.to_hsl();
         let hsl2 = c2.to_hsl();
-        for i in 0..N {
-            let hsl = Hsl::mix(hsl1, (N-i) as f32, hsl2, i as f32);
+        let n = N - 1;
+        for i in 0..=n {
+            let hsl = Hsl::mix(hsl1, (n-i) as f32, hsl2, i as f32);
             print_ansi(hsl.to_ansi());
         }
         print!(" │ ");
         let rgb1 = c1.to_rgb();
         let rgb2 = c2.to_rgb();
-        for i in 0..N {
-            let rgb = Rgb::mix(rgb1, (N-i) as f32, rgb2, i as f32);
+        for i in 0..=n {
+            let rgb = Rgb::mix(rgb1, (n-i) as f32, rgb2, i as f32);
             print_ansi(rgb.to_ansi());
         }
         print!(" │ ");
-        for i in 0..N {
-            let c = Color::blend(c1, (N-i) as f32, c2, i as f32);
+        for i in 0..=n {
+            let c = Color::blend(c1, (n-i) as f32, c2, i as f32);
             print_ansi(c.ansi());
         }
         print!(" │ ");
