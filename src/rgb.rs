@@ -21,6 +21,15 @@ impl Rgb {
             code: ansi_colours::ansi256_from_rgb((self.r, self.g, self.b)),
         }
     }
+    pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
+        debug_assert!(w1 + w2 > 0.0);
+        let (r1, g1, b1) = c1.parts();
+        let (r2, g2, b2) = c2.parts();
+        let r = (w1*r1 + w2*r2) / (w1+w2);
+        let g = (w1*g1 + w2*g2) / (w1+w2);
+        let b = (w1*b1 + w2*b2) / (w1+w2);
+        (r, g, b).into()
+    }
     #[allow(clippy::float_cmp)]
     pub fn to_hsl(self) -> Hsl {
         let (r, g, b) = (self.rp(), self.gp(), self.bp());
@@ -64,6 +73,9 @@ impl Rgb {
     /// blue part in `[0,1]`
     pub fn bp(self) -> f32 {
         self.b as f32 / 256f32
+    }
+    pub fn parts(self) -> (f32, f32, f32) {
+        (self.rp(), self.gp(), self.bp())
     }
     /// Compute the Luma value characterizing the "light" of the color,
     /// going from 0 (black) to 1 (white).

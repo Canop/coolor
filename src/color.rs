@@ -32,6 +32,23 @@ impl Color {
     pub fn luma(self) -> f32 {
         self.rgb().luma()
     }
+    /// compute a natural feeling intermediate between two colors
+    pub fn blend<C1: Into<Hsl>, C2: Into<Hsl>>(c1: C1, w1: f32, c2: C2, w2: f32) -> Self {
+        debug_assert!(w1 + w2 > 0.0);
+        let hsl1: Hsl = c1.into();
+        let hsl2: Hsl = c2.into();
+        let mixed_hsl = Hsl::mix(hsl1, w1, hsl2, w2);
+        let rgb1: Rgb = hsl1.to_rgb();
+        let rgb2: Rgb = hsl2.to_rgb();
+        let mixed_rgb = Rgb::mix(rgb1, w1, rgb2, w2);
+        let mixed_rgb_hsl = mixed_rgb.to_hsl();
+        let mixed = Hsl::mix(mixed_hsl, 0.5, mixed_rgb_hsl, 0.5);
+        Hsl {
+            h: mixed_rgb_hsl.h, // hue blending done only on rgb space
+            s: mixed.s, // saturation is mix between RGB computation and HSL one
+            l: mixed.l, // luminosity is mix between RGB computation and HSL one
+        }.into()
+    }
 }
 
 impl From<AnsiColor> for Color {

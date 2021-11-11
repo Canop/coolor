@@ -31,6 +31,13 @@ impl Hsl {
             Err(CoolorError::InvalidHsl(h, s, l))
         }
     }
+    pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
+        debug_assert!(w1 + w2 > 0.0);
+        let h = (w1*c1.h + w2*c2.h) / (w1+w2);
+        let s = (w1*c1.s + w2*c2.s) / (w1+w2);
+        let l = (w1*c1.l + w2*c2.l) / (w1+w2);
+        Self { h, s, l }
+    }
     pub fn to_ansi(self) -> AnsiColor {
         self.to_rgb().to_ansi()
     }
@@ -75,6 +82,17 @@ impl Hsl {
             + self.delta_l(other)
         )
             < 0.01
+    }
+}
+
+impl From<AnsiColor> for Hsl {
+    fn from(ansi: AnsiColor) -> Self {
+        ansi.to_hsl()
+    }
+}
+impl From<Rgb> for Hsl {
+    fn from(rgb: Rgb) -> Self {
+        rgb.to_hsl()
     }
 }
 

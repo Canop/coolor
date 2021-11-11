@@ -25,6 +25,16 @@ This one may be useful when you're interested into
 
 Be warned that the ANSI range is limited and that not all intuitive operations will give good results.
 
-The included example shows luminosity and saturation variations of all 240 ANSI colors, with all variants still ANSI colors.
+## Included Examples
+
+### ansi-variations
+
+Luminosity and saturation variations of all 240 ANSI colors, with all variants still ANSI colors.
 
 ![ansi-variations](doc/ansi-variations.png)
+
+### ansi-mix
+
+Several ways to mix colors
+
+![ansi-mix](doc/ansi-mix.png)
