@@ -29,5 +29,15 @@ impl AnsiColor {
         hsl.l = l;
         hsl.to_ansi()
     }
+    pub fn with_saturation_change(self, delta_saturation: f32) -> Self {
+        let mut hsl = self.to_hsl();
+        hsl.s = (hsl.s + delta_saturation).min(1.0).max(0.0);
+        hsl.to_ansi()
+    }
+    pub fn with_saturation(self, s: f32) -> Self {
+        let mut hsl = self.to_hsl();
+        hsl.s = s;
+        hsl.to_ansi()
+    }
 }
 

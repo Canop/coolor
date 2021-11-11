@@ -34,6 +34,24 @@ impl Color {
     }
 }
 
+impl From<AnsiColor> for Color {
+    fn from(ansi: AnsiColor) -> Self {
+        Self::Ansi(ansi)
+    }
+}
+
+impl From<Rgb> for Color {
+    fn from(rgb: Rgb) -> Self {
+        Self::Rgb(rgb)
+    }
+}
+
+impl From<Hsl> for Color {
+    fn from(rgb: Hsl) -> Self {
+        Self::Hsl(rgb)
+    }
+}
+
 /// check going from ansi to rgb and back makes us fall on the first color
 #[test]
 fn test_ansi_to_rgb_to_ansi() {
