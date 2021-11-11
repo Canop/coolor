@@ -1,5 +1,9 @@
 use crate::*;
 
+#[cfg(feature="crossterm")]
+use crossterm::style::Color as CC;
+
+/// Color type, may be Ansi, Hsl or Rgb
 #[derive(Clone, Copy, Debug)]
 pub enum Color {
     Ansi(AnsiColor),
@@ -33,10 +37,12 @@ impl Color {
         self.rgb().luma()
     }
     /// compute a natural feeling intermediate between two colors
-    pub fn blend<C1: Into<Hsl>, C2: Into<Hsl>>(c1: C1, w1: f32, c2: C2, w2: f32) -> Self {
+    pub fn blend<C1: Into<Color>, C2: Into<Color>>(c1: C1, w1: f32, c2: C2, w2: f32) -> Self {
+        let c1: Color = c1.into();
+        let c2: Color = c2.into();
         debug_assert!(w1 + w2 > 0.0);
-        let hsl1: Hsl = c1.into();
-        let hsl2: Hsl = c2.into();
+        let hsl1: Hsl = c1.hsl();
+        let hsl2: Hsl = c2.hsl();
         let mixed_hsl = Hsl::mix(hsl1, w1, hsl2, w2);
         let rgb1: Rgb = hsl1.to_rgb();
         let rgb2: Rgb = hsl2.to_rgb();
@@ -56,16 +62,64 @@ impl From<AnsiColor> for Color {
         Self::Ansi(ansi)
     }
 }
-
 impl From<Rgb> for Color {
     fn from(rgb: Rgb) -> Self {
         Self::Rgb(rgb)
     }
 }
-
 impl From<Hsl> for Color {
     fn from(rgb: Hsl) -> Self {
         Self::Hsl(rgb)
+    }
+}
+impl From<u8> for Color {
+    fn from(code: u8) -> Self {
+        Self::Ansi(AnsiColor::new(code))
+    }
+}
+
+#[cfg(feature="crossterm")]
+impl From<CC> for Color {
+    fn from(cc: CC) -> Self {
+        match cc {
+            CC::Reset => 0.into(),
+            CC::Black => 0.into(),
+            CC::DarkGrey => 8.into(),
+            CC::Red => 9.into(),
+            CC::DarkRed => 1.into(),
+            CC::Green => 10.into(),
+            CC::DarkGreen => 2.into(),
+            CC::Yellow => 11.into(),
+            CC::DarkYellow => 3.into(),
+            CC::Blue => 12.into(),
+            CC::DarkBlue => 4.into(),
+            CC::Magenta => 13.into(),
+            CC::DarkMagenta => 5.into(),
+            CC::Cyan => 14.into(),
+            CC::DarkCyan => 6.into(),
+            CC::White => 15.into(),
+            CC::Grey => 7.into(),
+            CC::Rgb { r, g, b } => {
+                Color::Rgb(Rgb { r, g, b })
+            },
+            CC::AnsiValue(code) => {
+                code.into()
+            }
+        }
+    }
+}
+
+#[cfg(feature="crossterm")]
+impl Into<CC> for Color {
+    fn into(self) -> CC {
+        match self {
+            Self::Ansi(AnsiColor{code}) => CC::AnsiValue(code),
+            Self::Rgb(Rgb { r, g, b }) => CC::Rgb { r, g, b },
+            Self::Hsl(hsl) => {
+                let Rgb { r, g, b } = hsl.to_rgb();
+                CC::Rgb { r, g, b }
+            }
+        }
     }
 }
 
