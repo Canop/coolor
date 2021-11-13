@@ -25,6 +25,8 @@ This one may be useful when you're interested into
 
 Be warned that the ANSI range is limited and that not all intuitive operations will give good results.
 
+Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates. There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors.
+
 ## Included Examples
 
 ### ansi-variations
