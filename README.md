@@ -23,6 +23,10 @@ This one may be useful when you're interested into
 - automated building of harmonious color schemes with guarantees of contrast
 - etc.
 
+Coolor is used in [SafeCloset](https://github.com/Canop/safecloset) to dynamically fade the background behind a dialog:
+
+![img](doc/faded-background.png)
+
 Be warned that the ANSI range is limited and that not all intuitive operations will give good results.
 
 Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates. There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors.
