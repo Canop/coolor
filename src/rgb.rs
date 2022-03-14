@@ -13,21 +13,37 @@ pub struct Rgb {
 
 impl Rgb {
     /// Create a new RGB color from its components
-    pub fn new(r: u8, g: u8, b: u8) -> Self {
+    pub const fn new(r: u8, g: u8, b: u8) -> Self {
         Self { r, g, b }
     }
+    pub const fn is_grey(self) -> bool {
+        self.r == self.g && self.g == self.b
+    }
+    /// Return the nearest ANSI color
+    ///
+    /// This is a slow function as it literally tries all
+    /// ANSI colors and picks the nearest one.
     pub fn to_ansi(self) -> AnsiColor {
-        AnsiColor {
-            code: ansi_colours::ansi256_from_rgb((self.r, self.g, self.b)),
+        let hsl = self.to_hsl();
+        let mut best = AnsiColor { code: 16 };
+        let mut smallest_distance: f32 = hsl.distance_to(best);
+        for code in 17..=255 {
+            let color = AnsiColor { code };
+            let distance = hsl.distance_to(color);
+            if distance < smallest_distance {
+                best = color;
+                smallest_distance = distance;
+            }
         }
+        best
     }
     pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
         debug_assert!(w1 + w2 > 0.0);
         let (r1, g1, b1) = c1.parts();
         let (r2, g2, b2) = c2.parts();
-        let r = (w1*r1 + w2*r2) / (w1+w2);
-        let g = (w1*g1 + w2*g2) / (w1+w2);
-        let b = (w1*b1 + w2*b2) / (w1+w2);
+        let r = (w1 * r1 + w2 * r2) / (w1 + w2);
+        let g = (w1 * g1 + w2 * g2) / (w1 + w2);
+        let b = (w1 * b1 + w2 * b2) / (w1 + w2);
         (r, g, b).into()
     }
     #[allow(clippy::float_cmp)]
@@ -84,18 +100,23 @@ impl Rgb {
     pub fn luma(self) -> f32 {
         0.2627 * self.rp() + 0.6780 * self.gp() + 0.0593 * self.bp()
     }
+    /// tentatively perceptual distance between the two colors,
+    /// based on a conversion to HSL
+    pub fn distance_to<H: Into<Hsl>>(self, other: H) -> f32 {
+        self.to_hsl().distance_to(other)
+    }
+}
+
+pub fn r255(v: f32) -> u8 {
+    (v * 255.0) as u8
 }
 
 impl From<(f32, f32, f32)> for Rgb {
     /// Convert from a (r,g,b) float tupples with components in [0,1[
     fn from(c: (f32, f32, f32)) -> Self {
-        debug_assert!(c.0<=1.0);
-        debug_assert!(c.1<=1.0);
-        debug_assert!(c.2<=1.0);
-        Rgb::new(
-            (c.0 * 255.0).round() as u8,
-            (c.1 * 255.0).round() as u8,
-            (c.2 * 255.0).round() as u8,
-        )
+        debug_assert!(c.0 <= 1.0);
+        debug_assert!(c.1 <= 1.0);
+        debug_assert!(c.2 <= 1.0);
+        Rgb::new(r255(c.0), r255(c.1), r255(c.2))
     }
 }

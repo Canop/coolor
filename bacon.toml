@@ -20,7 +20,15 @@ need_stdout = false
 watch = ["tests", "benches", "examples"]
 
 [jobs.clippy]
-command = ["cargo", "clippy", "--color", "always"]
+command = [
+	"cargo", "clippy",
+	"--color", "always",
+	"--",
+	"-A", "clippy::match_like_matches_macro",
+	"-A", "clippy::collapsible_if",
+	"-A", "clippy::collapsible_else_if",
+	"-A", "clippy::manual_range_contains",
+]
 need_stdout = false
 
 [jobs.test]

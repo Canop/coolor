@@ -25,11 +25,15 @@ fn main() {
     const T1: &str = "HSL walk";
     const T2: &str = "RGB walk";
     const T3: &str = "blend";
-    let b = bar(N+2);
+    let b = bar(N + 2);
     let b = &b;
-    println!("\n{:^w$}", "Blending random ANSI colors, all variants still ANSI", w = 3*N+18);
+    println!(
+        "\n{:^w$}",
+        "Blending random ANSI colors, all variants still ANSI",
+        w = 3 * N + 18
+    );
     println!(" ┌─────┬─────┬{}┬{}┬{}┐", b, b, b);
-    println!(" │ src │ dst │{:^w$}│{:^w$}│{:^w$}│", T1, T2, T3, w = N+2);
+    println!(" │ src │ dst │{:^w$}│{:^w$}│{:^w$}│", T1, T2, T3, w = N + 2);
     println!(" ├─────┼─────┼{}┼{}┼{}┤", b, b, b);
     for _ in 0..20 {
         let c1 = rand_ansi();
@@ -47,19 +51,19 @@ fn main() {
         let hsl2 = c2.to_hsl();
         let n = N - 1;
         for i in 0..=n {
-            let hsl = Hsl::mix(hsl1, (n-i) as f32, hsl2, i as f32);
+            let hsl = Hsl::mix(hsl1, (n - i) as f32, hsl2, i as f32);
             print_ansi(hsl.to_ansi());
         }
         print!(" │ ");
         let rgb1 = c1.to_rgb();
         let rgb2 = c2.to_rgb();
         for i in 0..=n {
-            let rgb = Rgb::mix(rgb1, (n-i) as f32, rgb2, i as f32);
+            let rgb = Rgb::mix(rgb1, (n - i) as f32, rgb2, i as f32);
             print_ansi(rgb.to_ansi());
         }
         print!(" │ ");
         for i in 0..=n {
-            let c = Color::blend(c1, (n-i) as f32, c2, i as f32);
+            let c = Color::blend(c1, (n - i) as f32, c2, i as f32);
             print_ansi(c.ansi());
         }
         print!(" │ ");

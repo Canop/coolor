@@ -25,11 +25,4 @@ mod error;
 mod hsl;
 mod rgb;
 
-pub use {
-    ansi::*,
-    color::*,
-    error::*,
-    hsl::*,
-    rgb::*,
-};
-
+pub use {ansi::*, color::*, error::*, hsl::*, rgb::*};

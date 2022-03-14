@@ -22,11 +22,11 @@ fn main() {
         }
         print!(" │ ");
         for i in -7..=7 {
-            print_color(ansi.with_luminosity_change((i as f32)*0.1));
+            print_color(ansi.with_luminosity_change((i as f32) * 0.1));
         }
         print!(" │ ");
         for i in -10..=0 {
-            print_color(ansi.with_saturation_change((i as f32)*0.1));
+            print_color(ansi.with_saturation_change((i as f32) * 0.1));
         }
         println!(" │");
     }
