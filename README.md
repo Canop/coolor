@@ -15,7 +15,7 @@
 Definition of ANSI, RGB and HSL color types and all the conversions between them.
 
 There are many other color conversion crates.
-This one may be useful when you're interested into
+This one is no-std and may be useful when you're interested into
 
 - variations of an ANSI color for your TUI application, for example fading, lightening, darkening, with compatibility with terminals that don't support RGB.
 - translations of color schemes
@@ -27,9 +27,10 @@ Coolor is used in [SafeCloset](https://github.com/Canop/safecloset) to dynamical
 
 ![img](doc/faded-background.png)
 
-Be warned that the ANSI range is limited and that not all intuitive operations will give good results.
+Be warned that the ANSI range is intrinsically limited to 240 colors and that not all intuitive operations will give good results.
 
-Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates. There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors.
+Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates.
+There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors.
 
 ## Included Examples
 

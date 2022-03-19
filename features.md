@@ -9,7 +9,7 @@ Example inclusion in Cargo.toml:
 
 ```toml
 [dependencies]
-coolor = { version="0.3", features=["crossterm"] }
+coolor = { version="0.5", features=["crossterm"] }
 ```
 
 
