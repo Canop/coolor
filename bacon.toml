@@ -1,7 +1,7 @@
 # This is a configuration file for the bacon tool
 # More info at https://github.com/Canop/bacon
 
-default_job = "check"
+default_job = "check-all"
 
 [jobs]
 
@@ -18,6 +18,16 @@ command = [
 ]
 need_stdout = false
 watch = ["tests", "benches", "examples"]
+
+[jobs.ex]
+command = [
+	"cargo", "run",
+	"--color", "always",
+	"--features", "crossterm",
+	"--example"
+]
+allow_warnings = true
+need_stdout = true
 
 [jobs.clippy]
 command = [

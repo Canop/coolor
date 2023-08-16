@@ -30,7 +30,9 @@ Coolor is used in [SafeCloset](https://github.com/Canop/safecloset) to dynamical
 Be warned that the ANSI range is intrinsically limited to 240 colors and that not all intuitive operations will give good results.
 
 Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates.
-There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors.
+There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors. You'll see it used in the included examples.
+
+Note: the RGB to ANSI conversion is performed using the [ansi_colours](https://github.com/mina86/ansi_colours) crate. Condider using it directly if you don't need the other features of coolor.
 
 ## Included Examples
 
@@ -45,3 +47,9 @@ Luminosity and saturation variations of all 240 ANSI colors, with all variants s
 Several ways to mix colors
 
 ![ansi-mix](doc/ansi-mix.png)
+
+### rgb-to-ansi
+
+Finding the nearest ANSI color from a RGB one
+
+![rgb-to-ansi](doc/rgb-to-ansi.png)

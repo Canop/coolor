@@ -23,19 +23,25 @@ impl Rgb {
     ///
     /// This is a slow function as it literally tries all
     /// ANSI colors and picks the nearest one.
-    pub fn to_ansi(self) -> AnsiColor {
-        let hsl = self.to_hsl();
+    pub fn to_ansi_slow(self) -> AnsiColor {
         let mut best = AnsiColor { code: 16 };
-        let mut smallest_distance: f32 = hsl.distance_to(best);
+        let mut smallest_distance: f32 = self.distance_to(best.to_rgb());
         for code in 17..=255 {
             let color = AnsiColor { code };
-            let distance = hsl.distance_to(color);
+            let distance = self.distance_to(color.to_rgb());
             if distance < smallest_distance {
                 best = color;
                 smallest_distance = distance;
             }
         }
         best
+    }
+    /// Return the nearest ANSI color
+    ///
+    /// This uses the excellent ansi_colours crate, as it's
+    /// very fast and gives rather good conversions
+    pub fn to_ansi(self) -> AnsiColor {
+        AnsiColor::new(ansi_colours::ansi256_from_rgb((self.r, self.g, self.b)))
     }
     pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
         debug_assert!(w1 + w2 > 0.0);
@@ -100,10 +106,16 @@ impl Rgb {
     pub fn luma(self) -> f32 {
         0.2627 * self.rp() + 0.6780 * self.gp() + 0.0593 * self.bp()
     }
-    /// tentatively perceptual distance between the two colors,
-    /// based on a conversion to HSL
-    pub fn distance_to<H: Into<Hsl>>(self, other: H) -> f32 {
-        self.to_hsl().distance_to(other)
+    /// tentatively perceptual distance between two RGB colors
+    /// (adapted from the ansi_colours crate, by mina86, who adapted
+    /// a formula found at https://www.compuphase.com/cmetric.htm)
+    pub fn distance_to<O: Into<Rgb>>(self, other: O) -> f32 {
+        let other = other.into();
+        let r_sum = self.r as f32 + other.r as f32;
+        let r = self.r as f32 - other.r as f32;
+        let g = self.g as f32 - other.g as f32;
+        let b = self.b as f32 - other.b as f32;
+        (1024.0 + r_sum) * r * r + 2048.0 * g * g + (1534.0 - r_sum) * b * b
     }
 }
 
