@@ -1,5 +1,5 @@
 //! Run this with
-//!     cargo run --example ansi-mix
+//!     cargo run --features crossterm --example ansi-mix
 use {
     coolor::*,
     crossterm::style::{self, Stylize},

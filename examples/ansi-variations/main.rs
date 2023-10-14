@@ -1,5 +1,5 @@
 //! Run this with
-//!     cargo run --example ansi-variations
+//!     cargo run --example ansi-variations --features crossterm
 use {
     coolor::AnsiColor,
     crossterm::style::{Color, Stylize},
