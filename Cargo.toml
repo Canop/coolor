@@ -1,6 +1,6 @@
 [package]
 name = "coolor"
-version = "0.6.2"
+version = "0.7.0"
 edition = "2021"
 authors = ["dystroy <denys.seguret@gmail.com>"]
 repository = "https://github.com/Canop/coolor"
@@ -15,7 +15,7 @@ default = []
 
 [dependencies]
 ansi_colours = "1.2.2"
-crossterm = { optional=true, version=">=0.23.2,<=0.25.0" }
+crossterm = { optional=true, version="=0.23.2" }
 
 [dev-dependencies]
 rand = "0.8"

@@ -23,6 +23,8 @@ impl Rgb {
     ///
     /// This is a slow function as it literally tries all
     /// ANSI colors and picks the nearest one.
+    /// The ansi->rgb->ansi round trip is guaranteed to
+    /// always fall on the first color.
     pub fn to_ansi_slow(self) -> AnsiColor {
         let mut best = AnsiColor { code: 16 };
         let mut smallest_distance: f32 = self.distance_to(best.to_rgb());
@@ -39,7 +41,9 @@ impl Rgb {
     /// Return the nearest ANSI color
     ///
     /// This uses the excellent ansi_colours crate, as it's
-    /// very fast and gives rather good conversions
+    /// very fast and gives rather good conversions. It doesn't
+    /// ensure a perfect ansi->rgb->ansi round trip: you don't
+    /// always fall on the first color.
     pub fn to_ansi(self) -> AnsiColor {
         AnsiColor::new(ansi_colours::ansi256_from_rgb((self.r, self.g, self.b)))
     }
