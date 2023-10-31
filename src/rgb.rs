@@ -19,16 +19,11 @@ impl Rgb {
     pub const fn is_grey(self) -> bool {
         self.r == self.g && self.g == self.b
     }
-    /// Return the nearest ANSI color
-    ///
-    /// This is a slow function as it literally tries all
-    /// ANSI colors and picks the nearest one.
-    /// The ansi->rgb->ansi round trip is guaranteed to
-    /// always fall on the first color.
-    pub fn to_ansi_slow(self) -> AnsiColor {
-        let mut best = AnsiColor { code: 16 };
+    #[inline]
+    pub fn nearest_ansi_in_range(self, min: u8, max: u8) -> AnsiColor {
+        let mut best = AnsiColor { code: min };
         let mut smallest_distance: f32 = self.distance_to(best.to_rgb());
-        for code in 17..=255 {
+        for code in min+1..=max {
             let color = AnsiColor { code };
             let distance = self.distance_to(color.to_rgb());
             if distance < smallest_distance {
@@ -40,12 +35,30 @@ impl Rgb {
     }
     /// Return the nearest ANSI color
     ///
-    /// This uses the excellent ansi_colours crate, as it's
-    /// very fast and gives rather good conversions. It doesn't
-    /// ensure a perfect ansi->rgb->ansi round trip: you don't
+    /// The ansi->rgb->ansi round trip is guaranteed to
     /// always fall on the first color.
     pub fn to_ansi(self) -> AnsiColor {
-        AnsiColor::new(ansi_colours::ansi256_from_rgb((self.r, self.g, self.b)))
+        if self.r == self.g && self.g == self.b {
+            AnsiColor { code: GREY_TO_ANSI[self.r as usize] }
+        } else if self.r < 108 {
+            if self.r < 41 {
+                self.nearest_ansi_in_range(17, 51)
+            } else {
+                self.nearest_ansi_in_range(52, 87)
+            }
+        } else if self.r < 195 {
+            if self.r < 151 {
+                self.nearest_ansi_in_range(88, 123)
+            } else {
+                self.nearest_ansi_in_range(124, 159)
+            }
+        } else {
+            if self.r < 235 {
+                self.nearest_ansi_in_range(160, 195)
+            } else {
+                self.nearest_ansi_in_range(196, 230)
+            }
+        }
     }
     pub fn mix(c1: Self, w1: f32, c2: Self, w2: f32) -> Self {
         debug_assert!(w1 + w2 > 0.0);
@@ -113,6 +126,7 @@ impl Rgb {
     /// tentatively perceptual distance between two RGB colors
     /// (adapted from the ansi_colours crate, by mina86, who adapted
     /// a formula found at https://www.compuphase.com/cmetric.htm)
+    #[inline(always)]
     pub fn distance_to<O: Into<Rgb>>(self, other: O) -> f32 {
         let other = other.into();
         let r_sum = self.r as f32 + other.r as f32;
@@ -136,3 +150,264 @@ impl From<(f32, f32, f32)> for Rgb {
         Rgb::new(r255(c.0), r255(c.1), r255(c.2))
     }
 }
+
+pub const GREY_TO_ANSI: &[u8] = &[
+    16,
+    16,
+    16,
+    16,
+    16,
+    232,
+    232,
+    232,
+    232,
+    232,
+    232,
+    232,
+    232,
+    232,
+    233,
+    233,
+    233,
+    233,
+    233,
+    233,
+    233,
+    233,
+    233,
+    233,
+    234,
+    234,
+    234,
+    234,
+    234,
+    234,
+    234,
+    234,
+    234,
+    234,
+    235,
+    235,
+    235,
+    235,
+    235,
+    235,
+    235,
+    235,
+    235,
+    235,
+    236,
+    236,
+    236,
+    236,
+    236,
+    236,
+    236,
+    236,
+    236,
+    236,
+    237,
+    237,
+    237,
+    237,
+    237,
+    237,
+    237,
+    237,
+    237,
+    237,
+    238,
+    238,
+    238,
+    238,
+    238,
+    238,
+    238,
+    238,
+    238,
+    238,
+    239,
+    239,
+    239,
+    239,
+    239,
+    239,
+    239,
+    239,
+    239,
+    239,
+    240,
+    240,
+    240,
+    240,
+    240,
+    240,
+    240,
+    240,
+    59,
+    59,
+    59,
+    59,
+    241,
+    241,
+    241,
+    241,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    242,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    243,
+    244,
+    244,
+    244,
+    244,
+    244,
+    244,
+    244,
+    244,
+    102,
+    102,
+    102,
+    102,
+    102,
+    245,
+    245,
+    245,
+    245,
+    245,
+    245,
+    245,
+    246,
+    246,
+    246,
+    246,
+    246,
+    246,
+    246,
+    246,
+    246,
+    246,
+    247,
+    247,
+    247,
+    247,
+    247,
+    247,
+    247,
+    247,
+    247,
+    247,
+    248,
+    248,
+    248,
+    248,
+    248,
+    248,
+    248,
+    248,
+    145,
+    145,
+    145,
+    145,
+    145,
+    249,
+    249,
+    249,
+    249,
+    249,
+    249,
+    249,
+    250,
+    250,
+    250,
+    250,
+    250,
+    250,
+    250,
+    250,
+    250,
+    250,
+    251,
+    251,
+    251,
+    251,
+    251,
+    251,
+    251,
+    251,
+    251,
+    251,
+    252,
+    252,
+    252,
+    252,
+    252,
+    252,
+    252,
+    252,
+    188,
+    188,
+    188,
+    188,
+    188,
+    253,
+    253,
+    253,
+    253,
+    253,
+    253,
+    253,
+    254,
+    254,
+    254,
+    254,
+    254,
+    254,
+    254,
+    254,
+    254,
+    254,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    231,
+    231,
+    231,
+    231,
+    231,
+    231,
+    231,
+    231,
+    231,
+];
+
+

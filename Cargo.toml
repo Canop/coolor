@@ -1,6 +1,6 @@
 [package]
 name = "coolor"
-version = "0.7.0"
+version = "0.8.0"
 edition = "2021"
 authors = ["dystroy <denys.seguret@gmail.com>"]
 repository = "https://github.com/Canop/coolor"
@@ -14,8 +14,13 @@ readme = "README.md"
 default = []
 
 [dependencies]
-ansi_colours = "1.2.2"
 crossterm = { optional=true, version="=0.23.2" }
 
 [dev-dependencies]
-rand = "0.8"
+rand = { version = "0.8", features = ["std_rng"] }
+glassbench = "0.3.6"
+
+[[bench]]
+name = "rgb_to_ansi"
+harness = false
+

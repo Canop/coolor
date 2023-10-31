@@ -1,4 +1,5 @@
 .bacon-locations
+/glassbench_*.db
 Cargo.lock
 /target/
 /trav

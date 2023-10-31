@@ -15,6 +15,7 @@ impl AnsiColor {
     pub const fn to_hsl(self) -> Hsl {
         ANSI_TO_HSL[self.code as usize]
     }
+    #[inline(always)]
     pub const fn to_rgb(self) -> Rgb {
         ANSI_TO_RGB[self.code as usize]
     }

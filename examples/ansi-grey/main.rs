@@ -1,9 +1,8 @@
 //! Run this with
-//!     cargo run --features crossterm --example rgb-to-ansi
+//!     cargo run --features crossterm --example ansi-grey
 use {
     coolor::*,
     crossterm::style::{Color as CC, Stylize},
-    rand::Rng,
 };
 
 /// Return the hexa notation commonly used for the web
@@ -16,22 +15,22 @@ fn print_color(c: Color) {
     print!("{}", "██████".with(cc));
 }
 
-fn compare(rgb: Rgb) {
+fn show(rgb: Rgb, ansi: AnsiColor) {
     print!(" {} ", to_hexa(rgb));
-    print_color(rgb.into());
-    let ansi = rgb.to_ansi();
     print_color(ansi.into());
-    print!(" {:>3}", ansi.code);
+    print!("  {:>3}   {:>3}", ansi.code, rgb.r);
     println!();
 }
 
 fn main() {
-    let mut rng = rand::thread_rng();
-    println!(" Print some random RGB colors and the nearest ANSI color");
-    println!("           rgb  ansi");
-    for _ in 0..20 {
-        let rgb = Rgb::new(rng.gen(), rng.gen(), rng.gen());
-        compare(rgb);
+    println!("All the ANSI colors with r=g=b");
+    println!("  hexa          ansi r=g=b");
+    for code in 0..=255 {
+        let ansi = AnsiColor { code };
+        let rgb = ansi.to_rgb();
+        if rgb.r == rgb.g && rgb.g == rgb.b {
+            show(rgb, ansi);
+        }
     }
     println!();
 }

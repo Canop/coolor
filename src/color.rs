@@ -128,7 +128,7 @@ fn test_ansi_to_rgb_to_ansi() {
     for code in 16..=255 {
         let c1 = AnsiColor { code };
         let c2 = c1.to_rgb();
-        let c3 = c2.to_ansi_slow();
+        let c3 = c2.to_ansi();
         assert_eq!(c1, c3);
     }
 }

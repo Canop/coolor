@@ -15,7 +15,7 @@
 Definition of ANSI, RGB and HSL color types and all the conversions between them.
 
 There are many other color conversion crates.
-This one is no-std and may be useful when you're interested into
+This one is no-std and pure-rust and may be useful when you're interested into
 
 - variations of an ANSI color for your TUI application, for example fading, lightening, darkening, with compatibility with terminals that don't support RGB.
 - translations of color schemes
@@ -31,8 +31,6 @@ Be warned that the ANSI range is intrinsically limited to 240 colors and that no
 
 Coolor doesn't contain functions to print on the terminal, but the colors can be used in other crates.
 There's an optional [feature](features.md) for conversion from and into [Crossterm](https://github.com/crossterm-rs/crossterm) colors. You'll see it used in the included examples.
-
-Note: the RGB to ANSI conversion is performed using the [ansi_colours](https://github.com/mina86/ansi_colours) crate. Consider using it directly if you don't need the other features of coolor.
 
 ## Included Examples
 
