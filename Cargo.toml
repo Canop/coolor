@@ -1,6 +1,6 @@
 [package]
 name = "coolor"
-version = "0.8.0"
+version = "0.8.1"
 edition = "2021"
 authors = ["dystroy <denys.seguret@gmail.com>"]
 repository = "https://github.com/Canop/coolor"
@@ -14,7 +14,7 @@ readme = "README.md"
 default = []
 
 [dependencies]
-crossterm = { optional=true, version="=0.23.2" }
+crossterm = { optional=true, version=">=0.23.2" }
 
 [dev-dependencies]
 rand = { version = "0.8", features = ["std_rng"] }
