@@ -14,13 +14,16 @@ readme = "README.md"
 default = []
 
 [dependencies]
-crossterm = { optional=true, version="=0.23.2" }
+crossterm = { optional=true, version="0.27.0" }
 
 [dev-dependencies]
+crossterm = { version="0.27.0" }
 rand = { version = "0.8", features = ["std_rng"] }
-glassbench = "0.3.6"
 
-[[bench]]
-name = "rgb_to_ansi"
-harness = false
+[[example]]
+name = "rgb-to-ansi"
+required-features = ["crossterm"]
 
+[[example]]
+name = "ansi-grey"
+required-features = ["crossterm"]

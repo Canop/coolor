@@ -1,5 +1,5 @@
 //! Run this with
-//!     cargo run --features crossterm --example ansi-grey
+//!     cargo run --example ansi-grey --features=crossterm
 use {
     coolor::*,
     crossterm::style::{Color as CC, Stylize},
