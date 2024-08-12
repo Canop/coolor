@@ -21,7 +21,7 @@ impl AnsiColor {
     }
     pub fn with_luminosity_change(self, delta_luminosity: f32) -> Self {
         let mut hsl = self.to_hsl();
-        hsl.l = (hsl.l + delta_luminosity).min(1.0).max(0.0);
+        hsl.l = (hsl.l + delta_luminosity).clamp(0.0, 1.0);
         hsl.to_ansi()
     }
     pub fn with_luminosity(self, l: f32) -> Self {
@@ -31,7 +31,7 @@ impl AnsiColor {
     }
     pub fn with_saturation_change(self, delta_saturation: f32) -> Self {
         let mut hsl = self.to_hsl();
-        hsl.s = (hsl.s + delta_saturation).min(1.0).max(0.0);
+        hsl.s = (hsl.s + delta_saturation).clamp(0.0, 1.0);
         hsl.to_ansi()
     }
     pub fn with_saturation(self, s: f32) -> Self {

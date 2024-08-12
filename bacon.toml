@@ -29,7 +29,7 @@ command = [
 allow_warnings = true
 need_stdout = true
 
-[jobs.clippy]
+[jobs.clippy-all]
 command = [
 	"cargo", "clippy",
 	"--color", "always",
@@ -38,6 +38,7 @@ command = [
 	"-A", "clippy::collapsible_if",
 	"-A", "clippy::collapsible_else_if",
 	"-A", "clippy::manual_range_contains",
+	"-A", "clippy::collapsible_else_if",
 ]
 need_stdout = false
 

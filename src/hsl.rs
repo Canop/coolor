@@ -123,13 +123,11 @@ impl From<Rgb> for Hsl {
 fn hue_to_rgb_component(v1: f32, v2: f32, vh: f32) -> f32 {
     let vh = (vh + 1.0) % 1.0;
     if 6.0 * vh < 1.0 {
-        (v1 + (v2 - v1) * 6.0 * vh).min(1.0).max(0.0)
+        (v1 + (v2 - v1) * 6.0 * vh).clamp(0.0, 1.0)
     } else if 2.0 * vh < 1.0 {
         v2
     } else if 3.0 * vh < 2.0 {
-        (v1 + (v2 - v1) * ((2.0 / 3.0) - vh) * 6.0)
-            .min(1.0)
-            .max(0.0)
+        (v1 + (v2 - v1) * ((2.0 / 3.0) - vh) * 6.0).clamp(0.0, 1.0)
     } else {
         v1
     }
