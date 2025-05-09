@@ -26,11 +26,11 @@ fn compare(rgb: Rgb) {
 }
 
 fn main() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     println!(" Print some random RGB colors and the nearest ANSI color");
     println!("           rgb  ansi");
     for _ in 0..20 {
-        let rgb = Rgb::new(rng.gen(), rng.gen(), rng.gen());
+        let rgb = Rgb::new(rng.random(), rng.random(), rng.random());
         compare(rgb);
     }
     println!();

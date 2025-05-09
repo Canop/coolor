@@ -10,7 +10,7 @@ use {
 const N: usize = 20;
 
 fn rand_ansi() -> AnsiColor {
-    AnsiColor::new(rand::thread_rng().gen())
+    AnsiColor::new(rand::rng().random())
 }
 
 fn print_ansi(ansi: AnsiColor) {
